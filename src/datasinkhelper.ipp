@@ -79,6 +79,12 @@ namespace g3 {
       std::string header() {
          std::ostringstream ss_entry;
          //  Day Month Date Time Year: is written as "%a %b %d %H:%M:%S %Y" and formatted output as : Wed Sep 19 08:28:16 2012
+         ss_entry << "\""<<"timestamp" <<  "\"" <<
+              "," << "\""<< "num1" <<  "\""<<
+              "," << "\""<< "num2" <<  "\""<<
+              "," << "\""<< "num3" <<  "\""<<
+              "," << "\""<< "num4" <<  "\""<<
+              "," << "\""<< "num5" <<  "\""<<"\n";
         //  ss_entry << "\""<<"timestamp" <<  "\"" << "," << "\""<< "data" <<  "\""<< "\n";
         //  ss_entry << "\t\tg3log created log at: " << g3::localtime_formatted(g3::systemtime_now(), "%a %b %d %H:%M:%S %Y") << "\n";
         //  ss_entry << "\t\tLOG format: [YYYY/MM/DD hh:mm:ss uuu* LEVEL FILE:LINE] message";

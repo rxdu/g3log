@@ -2,7 +2,7 @@
 * 2012 by KjellKod.cc. This is PUBLIC DOMAIN to use at your own risk and comes
 * with no warranties. This code is yours to share, use and modify with no
 * strings attached and no restrictions or obligations.
-* 
+*
 * For more information see g3log/LICENSE or refer refer to http://unlicense.org
 * ============================================================================*/
 
@@ -53,6 +53,21 @@ namespace g3 {
       return out;
    }
 
+   // instead of logging all details, just log input msg as pure numerical data
+   std::string LogTimeStampToString(const LogMessage &msg) {
+     std::string out;
+    //  out.append("\n" + msg.timestamp() + ",");
+     out.append("\n" + msg.microseconds() + ",");
+     return out;
+   }
+
+   // helper for normal numerical data only
+   std::string normalToDataString(const LogMessage &msg) {
+      auto out = LogTimeStampToString(msg);
+      out.append(msg.message());
+      return out;
+   }   
+
    // helper for fatal signal
    std::string  fatalSignalToString(const LogMessage &msg) {
       std::string out; // clear any previous text and formatting
@@ -94,7 +109,8 @@ namespace g3 {
    // Format the log message according to it's type
    std::string LogMessage::toString() const {
       if (false == wasFatal()) {
-         return normalToString(*this);
+        //  return normalToString(*this);
+         return normalToDataString(*this);
       }
 
       const auto level_value = _level.value;

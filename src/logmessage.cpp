@@ -57,7 +57,8 @@ namespace g3 {
    std::string LogTimeStampToString(const LogMessage &msg) {
      std::string out;
     //  out.append("\n" + msg.timestamp() + ",");
-     out.append("\n" + msg.microseconds() + ",");
+     //out.append("\n" + msg.microseconds() + ",");
+     out.append("\n");
      return out;
    }
 
@@ -66,7 +67,7 @@ namespace g3 {
       auto out = LogTimeStampToString(msg);
       out.append(msg.message());
       return out;
-   }   
+   }
 
    // helper for fatal signal
    std::string  fatalSignalToString(const LogMessage &msg) {

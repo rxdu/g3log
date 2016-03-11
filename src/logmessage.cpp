@@ -51,6 +51,15 @@ namespace g3 {
       return out;
    }
 
+   // helper for normal (minimal)
+   std::string normalToStringMinimal(const LogMessage& msg) {
+	   std::string out;
+	   out.append("\n" + msg.microseconds() +  "\t"
+			   + msg.level() + "\t");
+	   out.append(msg.message());
+	   return out;
+   }
+
    // helper for fatal signal
    std::string  fatalSignalToString(const LogMessage& msg) {
       std::string out; // clear any previous text and formatting
@@ -92,7 +101,8 @@ namespace g3 {
    // Format the log message according to it's type
    std::string LogMessage::toString() const {
       if (false == wasFatal()) {
-         return normalToString(*this);
+         //return normalToString(*this);
+    	  return normalToStringMinimal(*this);
       }
 
       const auto level_value = _level.value;

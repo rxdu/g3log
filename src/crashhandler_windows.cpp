@@ -11,16 +11,12 @@
 #endif
 
 #include <windows.h>
-#include <intrin.h>
 #include <csignal>
-#include <cstring>
-#include <cstdlib>
 #include <sstream>
 #include <atomic>
 #include <process.h> // getpid
 #include "g3log/crashhandler.hpp"
 #include "g3log/stacktrace_windows.hpp"
-#include "g3log/logmessage.hpp"
 #include "g3log/logcapture.hpp"
 
 #define getpid _getpid
@@ -148,11 +144,9 @@ namespace {
 
 namespace g3 {
    namespace internal {
-
-
       // For windows exceptions this might ONCE be set to false, in case of a
       // windows exceptions and not a signal
-      bool blockForFatalHandling() {
+      bool shouldBlockForFatalHandling() {
          return gBlockForFatal;
       }
 

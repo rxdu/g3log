@@ -13,17 +13,15 @@
  * ============================================================================*/
 
 #include "g3log/stacktrace_windows.hpp"
-#include "g3log/g3log.hpp"
 
 #include <windows.h>
 #include <dbghelp.h>
 #include <map>
 #include <memory>
-#include <atomic>
 #include <cassert>
 #include <vector>
-#include <cstdlib>
 #include <mutex>
+#include <g3log/g3log.hpp>
 
 
 #if !(defined(WIN32) || defined(_WIN32) || defined(__WIN32__))

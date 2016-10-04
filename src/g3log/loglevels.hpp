@@ -13,16 +13,17 @@
 // the DEBUG logging level for G3log. In that case they can instead use the define
 //  "CHANGE_G3LOG_DEBUG_TO_DBUG" and G3log's logging level DEBUG is changed to be DBUG
 #if (defined(CHANGE_G3LOG_DEBUG_TO_DBUG))
-   #if (defined(DBUG))
-      #error "DEBUG is already defined elsewhere which clashes with G3Log's log level DEBUG"
-   #endif
+#if (defined(DBUG))
+#error "DEBUG is already defined elsewhere which clashes with G3Log's log level DEBUG"
+#endif
 #else
-   #if (defined(DEBUG))
-      #error "DEBUG is already defined elsewhere which clashes with G3Log's log level DEBUG"
-   #endif
+#if (defined(DEBUG))
+#error "DEBUG is already defined elsewhere which clashes with G3Log's log level DEBUG"
+#endif
 #endif
 
-#include <string>
+#include <string> 
+#include <algorithm>
 
 
 // Levels for logging, made so that it would be easy to change, remove, add levels -- KjellKod
@@ -30,21 +31,42 @@ struct LEVELS {
    // force internal copy of the const char*. This is a simple safeguard for when g3log is used in a
    // "dynamic, runtime loading of shared libraries"
 
-   LEVELS(const LEVELS &other): value(other.value), text(other.text.c_str()) {}
-   LEVELS(int id, const char *idtext) : value(id), text(idtext) {}
+   LEVELS(const LEVELS& other): value(other.value), text(other.text.c_str()) {}
+   LEVELS(int id, const char* idtext) : value(id), text(idtext) {}
 
-   friend bool operator==(const LEVELS &lhs, const LEVELS &rhs) {
-      return (lhs.value == rhs.value && lhs.text == rhs.text);
+   bool operator==(const LEVELS& rhs)  const {
+      return (value == rhs.value && text == rhs.text);
    }
 
-   const int value;
-   const std::string text;
+   bool operator!=(const LEVELS& rhs) const {
+      return (value != rhs.value || text != rhs.text);
+   }
+
+   friend void swap(LEVELS& first, LEVELS& second) {
+      using std::swap;
+      swap(first.value, second.value);
+      swap(first.text, second.text);
+   }
+
+
+   LEVELS& operator=(LEVELS other) {
+      swap(*this, other);
+      return *this;
+   }
+
+
+   int value;
+   std::string text;
 };
 
 
 
 namespace g3 {
    static const int kDebugVaulue = 0;
+   static const int kInfoValue = 100;
+   static const int kWarningValue = 500;
+   static const int kFatalValue = 1000;
+   static const int kInternalFatalValue = 2000;
 }
 
 #if (defined(CHANGE_G3LOG_DEBUG_TO_DBUG))
@@ -52,8 +74,8 @@ const LEVELS DBUG {g3::kDebugVaulue, {"DEBUG"}},
 #else
 const LEVELS DEBUG {g3::kDebugVaulue, {"DEBUG"}},
 #endif
-      INFO {g3::kDebugVaulue + 1, {"INFO"}},
-      WARNING {INFO.value + 1, {"WARNING"}},
+      INFO {g3::kInfoValue, {"INFO"}},
+      WARNING {g3::kWarningValue, {"WARNING"}},
 
 
 
@@ -75,17 +97,17 @@ const LEVELS DEBUG {g3::kDebugVaulue, {"DEBUG"}},
 
 // 1) Remember to update the FATAL initialization below
 // 2) Remember to update the initialization of "g3loglevels.cpp/g_log_level_status"
-      FATAL {500, {"FATAL"}};
+      FATAL {g3::kFatalValue, {"FATAL"}};
 
 namespace g3 {
    namespace internal {
-      const LEVELS CONTRACT {1000, {"CONTRACT"}},
-            FATAL_SIGNAL {1001, {"FATAL_SIGNAL"}},
-            FATAL_EXCEPTION {1002, {"FATAL_EXCEPTION"}};
+      const LEVELS CONTRACT {g3::kInternalFatalValue, {"CONTRACT"}},
+            FATAL_SIGNAL {g3::kInternalFatalValue +1, {"FATAL_SIGNAL"}},
+            FATAL_EXCEPTION {kInternalFatalValue +2, {"FATAL_EXCEPTION"}};
 
       /// helper function to tell the logger if a log message was fatal. If it is it will force
       /// a shutdown after all log entries are saved to the sinks
-      bool wasFatal(const LEVELS &level);
+      bool wasFatal(const LEVELS& level);
    }
 
 #ifdef G3_DYNAMIC_LOGGING
@@ -95,9 +117,9 @@ namespace g3 {
       void setLogLevel(LEVELS level, bool enabled_status);
       std::string printLevels();
       void reset();
-      
+
    } // only_change_at_initialization
 #endif
-      bool logLevel(LEVELS level);
+   bool logLevel(LEVELS level);
 } // g3
 

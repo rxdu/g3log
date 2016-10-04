@@ -40,7 +40,7 @@ namespace g3 {
 
 
    FileSink::~FileSink() {
-      std::string exit_msg {"\n\ng3log g3FileSink shutdown at: "};
+      std::string exit_msg {"\ng3log g3FileSink shutdown at: "};
       exit_msg.append(localtime_formatted(systemtime_now(), internal::time_formatted));
       filestream() << exit_msg << std::flush;
 

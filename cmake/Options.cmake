@@ -1,5 +1,5 @@
 # g3log is a KjellKod Logger
-# 2015 @author Kjell Hedström, hedstrom@kjellkod.cc 
+# 2015 @author Kjell Hedström, hedstrom@kjellkod.cc
 # ==================================================================
 # 2015 by KjellKod.cc. This is PUBLIC DOMAIN to use at your own
 #    risk and comes  with no warranties.
@@ -10,7 +10,7 @@
 
 
 # PLEASE NOTE THAT:
-# the following definitions can through options be added 
+# the following definitions can through options be added
 # to the auto generated file src/g3log/generated_definitions.hpp
 #   add_definitions(-DG3_DYNAMIC_LOGGING)
 #   add_definitions(-DCHANGE_G3LOG_DEBUG_TO_DBUG)
@@ -21,7 +21,7 @@
 
 
 # Used for generating a macro definitions file  that is to be included
-# that way you do not have to re-state the Options.cmake definitions when 
+# that way you do not have to re-state the Options.cmake definitions when
 # compiling your binary (if done in a separate build step from the g3log library)
 SET(G3_DEFINITIONS "")
 
@@ -34,8 +34,8 @@ IF(USE_DYNAMIC_LOGGING_LEVELS)
    message( STATUS "-DUSE_DYNAMIC_LOGGING_LEVELS=ON" )
    message( STATUS "\tDynamic logging levels is used" )
    message( STATUS "\tUse  [g3::addLogLevel(LEVEL boolean)] to enable/disable logging on specified levels\n\n" )
-ELSE() 
-   message( STATUS "-DUSE_DYNAMIC_LOGGING_LEVELS=OFF" ) 
+ELSE()
+   message( STATUS "-DUSE_DYNAMIC_LOGGING_LEVELS=OFF" )
 ENDIF(USE_DYNAMIC_LOGGING_LEVELS)
 
 
@@ -49,16 +49,16 @@ IF(CHANGE_G3LOG_DEBUG_TO_DBUG)
    LIST(APPEND G3_DEFINITIONS CHANGE_G3LOG_DEBUG_TO_DBUG)
    LIST(APPEND G3_DEFINITIONS "G3LOG_DEBUG DBUG")
    message( STATUS "-DCHANGE_G3LOG_DEBUG_TO_DBUG=ON                 DBUG instead of DEBUG logging level is used" )
-ELSE() 
+ELSE()
    LIST(APPEND G3_DEFINITIONS "G3LOG_DEBUG DEBUG")
-   message( STATUS "-DCHANGE_G3LOG_DEBUG_TO_DBUG=OFF \t(Debuggin logging level is 'DEBUG')" ) 
+   message( STATUS "-DCHANGE_G3LOG_DEBUG_TO_DBUG=OFF \t(Debuggin logging level is 'DEBUG')" )
 ENDIF(CHANGE_G3LOG_DEBUG_TO_DBUG)
 
 
 
 # -DENABLE_FATAL_SIGNALHANDLING=ON   : defualt change the
 # By default fatal signal handling is enabled. You can disable it with this option
-# enumerated in src/stacktrace_windows.cpp 
+# enumerated in src/stacktrace_windows.cpp
 option (ENABLE_FATAL_SIGNALHANDLING
     "Vectored exception / crash handling with improved stack trace" ON)
 
@@ -66,54 +66,48 @@ IF(NOT ENABLE_FATAL_SIGNALHANDLING)
    LIST(APPEND G3_DEFINITIONS DISABLE_FATAL_SIGNALHANDLING)
 
    message( STATUS "-DENABLE_FATAL_SIGNALHANDLING=OFF               Fatal signal handler is disabled" )
-ELSE() 
+ELSE()
    message( STATUS "-DENABLE_FATAL_SIGNALHANDLING=ON\tFatal signal handler is enabled" )
 ENDIF(NOT ENABLE_FATAL_SIGNALHANDLING)
 
 # Option for building as a static or shared library in all platforms
-option (G3_SHARED_LIB  "Build shared library" ON)
+option (G3_SHARED_LIB  "Build shared library" OFF)
 IF(G3_SHARED_LIB)
-   message( STATUS "-DG3_SHARED_LIB=ON\tBuild shared library" ) 
+   message( STATUS "-DG3_SHARED_LIB=ON\tBuild shared library" )
 ELSE()
-   MESSAGE("-DG3_SHARED_LIB=OFF\tBuild static library")  
+   message( STATUS "-DG3_SHARED_LIB=OFF\tBuild static library")
 ENDIF()
-   
+
 # WINDOWS OPTIONS
-IF (MSVC OR MINGW) 
+IF (MSVC OR MINGW)
 # -DENABLE_VECTORED_EXCEPTIONHANDLING=ON   : defualt change the
-# By default vectored exception handling is enabled, you can disable it with this option. 
+# By default vectored exception handling is enabled, you can disable it with this option.
 # Please know that only known fatal exceptions will be caught, these exceptions are the ones
-# enumerated in src/stacktrace_windows.cpp 
+# enumerated in src/stacktrace_windows.cpp
    option (ENABLE_VECTORED_EXCEPTIONHANDLING
        "Vectored exception / crash handling with improved stack trace" ON)
 
    IF(NOT ENABLE_VECTORED_EXCEPTIONHANDLING)
       LIST(APPEND G3_DEFINITIONS DISABLE_VECTORED_EXCEPTIONHANDLING)
-      message( STATUS "-DENABLE_VECTORED_EXCEPTIONHANDLING=OFF           Vectored exception handling is disabled" ) 
-   ELSE() 
-      message( STATUS "-DENABLE_VECTORED_EXCEPTIONHANDLING=ON\t\t\tVectored exception handling is enabled" ) 
+      message( STATUS "-DENABLE_VECTORED_EXCEPTIONHANDLING=OFF           Vectored exception handling is disabled" )
+   ELSE()
+      message( STATUS "-DENABLE_VECTORED_EXCEPTIONHANDLING=ON\t\t\tVectored exception handling is enabled" )
    ENDIF(NOT ENABLE_VECTORED_EXCEPTIONHANDLING)
 
 
 
 
-# Default ON. Will trigger a break point in DEBUG builds if the signal handler 
+# Default ON. Will trigger a break point in DEBUG builds if the signal handler
 #  receives a fatal signal.
 #
    option (DEBUG_BREAK_AT_FATAL_SIGNAL
        "Enable Visual Studio break point when receiving a fatal exception. In __DEBUG mode only" OFF)
    IF(DEBUG_BREAK_AT_FATAL_SIGNAL)
      LIST(APPEND G3_DEFINITIONS DEBUG_BREAK_AT_FATAL_SIGNAL)
-     message( STATUS "-DDEBUG_BREAK_AT_FATAL_SIGNAL=ON                  Break point for fatal signal is enabled for __DEBUG." ) 
-   ELSE() 
-      message( STATUS "-DDEBUG_BREAK_AT_FATAL_SIGNAL=OFF\t\t\tBreak point for fatal signal is disabled" ) 
+     message( STATUS "-DDEBUG_BREAK_AT_FATAL_SIGNAL=ON                  Break point for fatal signal is enabled for __DEBUG." )
+   ELSE()
+      message( STATUS "-DDEBUG_BREAK_AT_FATAL_SIGNAL=OFF\t\t\tBreak point for fatal signal is disabled" )
    ENDIF(DEBUG_BREAK_AT_FATAL_SIGNAL)
 
 ENDIF (MSVC OR MINGW)
-message( STATUS "\n\n\n" )
-
-
-
-
-
-
+#message( STATUS "\n\n\n" )

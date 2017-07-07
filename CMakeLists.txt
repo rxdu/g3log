@@ -53,7 +53,6 @@ if(NOT CMAKE_BUILD_TYPE AND NOT (MSVC_IDE OR XCODE))
   set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type, one of: Release, Debug" FORCE)
 endif()
 
-
 project (g3log)
 
 message( STATUS "Build type: ${CMAKE_BUILD_TYPE}" )
@@ -76,104 +75,42 @@ IF ( NOT VERSION )
       message("windows: Extracting git software version")
       execute_process(COMMAND powershell "(git rev-list --branches HEAD | Measure-Object -line).Lines" OUTPUT_VARIABLE GIT_VERSION WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
    ELSE()
-      IF(UNIX OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin") 
-         message( STATUS "nix: Extracting git software version" ) 
+      IF(UNIX OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+         message( STATUS "nix: Extracting git software version" )
       ELSE()
-         message( STATUS "unknown platform: extracting git software version" ) 
+         message( STATUS "unknown platform: extracting git software version" )
       ENDIF()
       execute_process(COMMAND bash "-c" "git rev-list --branches HEAD | wc -l | tr -d ' ' | tr -d '\n'" OUTPUT_VARIABLE GIT_VERSION WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
    ENDIF()
- 
+
    SET(MINOR_VERSION 3)
    math(EXPR VERSION-BASE ${GIT_VERSION}/255)
    math(EXPR VERSION-REMAINDER ${GIT_VERSION}%255)
-   message( STATUS "git build version: ${GIT_VERSION}" ) 
-   message( STATUS "version base: ${VERSION-BASE}" ) 
-   message( STATUS "version remainder: ${VERSION-REMAINDER}" ) 
+   message( STATUS "git build version: ${GIT_VERSION}" )
+   message( STATUS "version base: ${VERSION-BASE}" )
+   message( STATUS "version remainder: ${VERSION-REMAINDER}" )
    # SET(BUILD_NUMBER ${GIT_VERSION})
-   SET(BUILD_NUMBER ${VERSION-BASE}) 
-   SET(VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}-${VERSION-REMAINDER}) 
+   SET(BUILD_NUMBER ${VERSION-BASE})
+   SET(VERSION ${MAJOR_VERSION}.${MINOR_VERSION}.${BUILD_NUMBER}-${VERSION-REMAINDER})
 ENDIF()
 message( STATUS "Software Version: ${VERSION}" )
 
 
-
-   # ============================================================================
-   # G3LOG OPTIONAL FEATURES
-   # ============================================================================
-   INCLUDE (${g3log_SOURCE_DIR}/Options.cmake)
-
-   # =========================================================================
-   # G3 Macro definitions in Options.cmake are written to file
-   #    this avoids having to re-state your definitions in your source code
-   #    or compile options
-   #==========================================================================
-   INCLUDE (${g3log_SOURCE_DIR}/GenerateMacroDefinitionsFile.cmake)
+# ============================================================================
+# G3LOG OPTIONAL FEATURES
+# ============================================================================
+INCLUDE (${g3log_SOURCE_DIR}/cmake/Options.cmake)
 
 
-
-   # =========================================================================
-   # G3LOG BUILD
-   #==========================================================================
-   INCLUDE (${g3log_SOURCE_DIR}/Build.cmake)
-
-
-
-   # ============================================================================
-   # EXAMPLE OPTIONS: By defauls is ON. This will create 'g3log-FATAL-* examples'
-   # ============================================================================
-   # DISABLE WITH:  -DADD_FATAL_EXAMPLE=OFF
-   INCLUDE (${g3log_SOURCE_DIR}/example/Example.cmake)
+# =========================================================================
+# G3 Macro definitions in Options.cmake are written to file
+#    this avoids having to re-state your definitions in your source code
+#    or compile options
+#==========================================================================
+INCLUDE (${g3log_SOURCE_DIR}/cmake/GenerateMacroDefinitionsFile.cmake)
 
 
-
-   # ============================================================================
-   # PERFORMANCE TEST OPTIONS: Performance operations for g3log
-   # ============================================================================
-   # ENABLE WITH:  -DADD_G3LOG_PERFORMANCE=ON
-   INCLUDE (${g3log_SOURCE_DIR}/test_performance/Performance.cmake)
-
-
-
-   # ==========================================================================
-   # UNIT TEST OPTIONS:
-   # ============================================================================
-   # ENABLE WITH:  -DADD_G3LOG_UNIT_TEST=ON
-   INCLUDE (${g3log_SOURCE_DIR}/test_unit/Test.cmake)
-
-
-   
-
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux" OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-   # ==========================================================================
-   # BETA : package manager for G3Log,. not yet reliable. Use at your own risk
-   #        only tested on Ubuntu and CentOS
-   #
-   #        For OSX you can install an older version using 'brew install'
-   #
-   # ==========================================================================
-   #   Package handling is done AFTER all other CMake setup
-   #   usage:   make package
-   #   Check the output result and install accordingly.
-   # ==========================================================================
-   INCLUDE (${g3log_SOURCE_DIR}/CPackLists.txt)
-ENDIF()
-
-
-IF (NOT MSVC)
-   message( STATUS "\n\n
-      *******************************************************************
-      Please do 'make clean-cmake' before next cmake generation.
-         It is a good idea to purge your build directory of CMake
-         generated cache files
-      *******************************************************************
-       " )
-   add_custom_target(clean-cmake
-      COMMAND ${CMAKE_COMMAND} -P ${g3log_SOURCE_DIR}/CleanAll.cmake
-   )
-ENDIF()
-
-
-
-
-
+# =========================================================================
+# G3LOG BUILD
+#==========================================================================
+INCLUDE (${g3log_SOURCE_DIR}/cmake/Build.cmake)

@@ -22,7 +22,7 @@ SET(ACTIVE_CPP0xx_DIR "Release")
   #  1) http://kjellkod.wordpress.com/2013/09/23/experimental-g3log-with-clang/
   #  2) https://github.com/maidsafe/MaidSafe/wiki/Hacking-with-Clang-llvm-abi-and-llvm-libc
 IF (${CMAKE_CXX_COMPILER_ID} MATCHES ".*Clang")
-   message( STATUS "" )
+   #message( STATUS "" )
    message( STATUS "cmake for Clang " )
    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++14 -Wunused -D_GLIBCXX_USE_NANOSLEEP")
    IF (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
@@ -90,7 +90,7 @@ ENDIF()
    # GENERIC STEPS
    file(GLOB SRC_FILES ${LOG_SRC}/g3log/*.h ${LOG_SRC}/g3log/*.hpp ${LOG_SRC}/*.cpp ${LOG_SRC}/*.ipp)
    file(GLOB HEADER_FILES ${LOG_SRC}/g3log/*.hpp ${LOG_SRC}/*.hpp)
-   
+
    list( APPEND HEADER_FILES ${GENERATED_G3_DEFINITIONS} )
    list( APPEND SRC_FILES ${GENERATED_G3_DEFINITIONS} )
 
@@ -136,5 +136,3 @@ ENDIF()
 
    # Kjell: This is likely not necessary, except for Windows?
    TARGET_INCLUDE_DIRECTORIES(${G3LOG_LIBRARY} PUBLIC ${LOG_SRC})
-
-

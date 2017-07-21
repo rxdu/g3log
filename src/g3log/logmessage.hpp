@@ -11,6 +11,7 @@
 
 
 #include "g3log/loglevels.hpp"
+#include "g3log/dataloglevel.hpp"
 #include "g3log/time.hpp"
 #include "g3log/moveoncopy.hpp"
 #include "g3log/crashhandler.hpp"

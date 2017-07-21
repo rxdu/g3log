@@ -22,6 +22,7 @@
 #pragma once
 
 #include "g3log/loglevels.hpp"
+#include "g3log/dataloglevel.hpp"
 #include "g3log/logcapture.hpp"
 #include "g3log/logmessage.hpp"
 #include "g3log/generated_definitions.hpp"

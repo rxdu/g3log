@@ -32,8 +32,21 @@ namespace g3 {
       return out;
    }
 
+   // helper for setting the normal log data in an entry
+   std::string LogDataToString(const LogMessage& msg) {
+	   std::string out;
+	   out.append(msg.line());
+	   return out;
+   }
+
 
    // helper for normal
+   std::string normalDataToString(const LogMessage& msg) {
+	   auto out = LogDataToString(msg);
+	   out.append(msg.message() + '\n');
+	   return out;
+   }
+
    std::string normalToString(const LogMessage& msg) {
       auto out = LogDetailsToString(msg);
       out.append(msg.message() + '\n');
@@ -81,7 +94,10 @@ namespace g3 {
    // Format the log message according to it's type
    std::string LogMessage::toString() const {
       if (false == wasFatal()) {
-         return normalToString(*this);
+    	  if(_level.value == DATA.value)
+    		  return normalDataToString(*this);
+    	  else
+    		  return normalToString(*this);
       }
 
       const auto level_value = _level.value;

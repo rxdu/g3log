@@ -44,7 +44,7 @@ namespace g3 {
       std::string exit_msg {"g3log g3FileSink shutdown at: "};
       auto now = std::chrono::system_clock::now();
       exit_msg.append(localtime_formatted(now, internal::time_formatted)).append("\n");
-      filestream() << exit_msg << std::flush;
+      //filestream() << exit_msg << std::flush;
 
       exit_msg.append("Log file at: [").append(_log_file_with_path).append("]\n");
       std::cerr << exit_msg << std::flush;

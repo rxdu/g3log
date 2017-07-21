@@ -8,7 +8,8 @@
 #   and no restrictions or obligations.
 # ===================================================================
 
-
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 SET(LOG_SRC ${g3log_SOURCE_DIR}/src)
 include_directories(${LOG_SRC})
